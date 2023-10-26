@@ -29,5 +29,5 @@ orderDate:{
     default:Date.now()
 }
 },{_id:false})
-// orderSchema.plugin(autoIncrement);
+// orderSchema.plugin(autoIncrement,{ inc_field:'_id'})
 mongoose.model('Orders',orderSchema)

@@ -12,7 +12,6 @@ exports.getorders=async(req,res,next)=>{
 }
 exports.addOrder=(req,res,next)=>{
     let addOrderSchema=new orderSchema({
-        _id:req.body.id,
         clientId:req.body.clientId,
         products:req.body.products,
         paymentMethod:req.body.paymentMethod,
@@ -37,7 +36,6 @@ exports.updateOrderStatus=(req,res,next)=>
             if(req.body.status=="collected")
             {
               let addPickedUPRequestSchema=new pickedUPRequestSchema({
-                _id:2,
                 orderId:req.body.id,
                 
             });
@@ -55,28 +53,30 @@ exports.updateOrderStatus=(req,res,next)=>
     }).catch(err=>next(err))
 }
 function sendMail(status,email){
-    console.log("email sended")
-    // const transporter = nodemailer.createTransport({
-    //   secure: false,
-    //   auth: {
-    //   user: "eng.samahelgayar@gmail.com",
-    //   pass:"********"
-    //  }
-    // });
+    console.log("email is sending")
+    const transporter = nodemailer.createTransport({
+       host: "live.smtp.mailtrap.io",
+       port:587,
+       secure: false,
+       auth: {
+       user: "api",
+       pass:"1f0d7cc9a6a128cfb0cb5ad7f254ab90"
+      }
+    });
     
-      // const mailOptions = {
-      //   from: 'eng.samahelgayar@gmail.com',
-      //   to: email,
-      //   subject: 'Follow Up Your Shippment',
-      //   text: ` Now :your order is`+status
-      // }
-      // transporter.sendMail(mailOptions, (error, info) => {
-      //   if (error) {
-      //     console.log(error);
-      //   } else {
-      //     console.log('Email sent: ' + info.response);
-      //   }
-      // });
+      const mailOptions = {
+        from: 'alaaelshahat6703@gmail.com ',
+        to: email,
+        subject: 'Follow Up Your Shippment',
+        text: ` Now :your order is`+status
+      }
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
   }
   function assignPickedRequestNumbertoOrder(pickupReqNo,orderNo)
   {
@@ -87,4 +87,11 @@ function sendMail(status,email){
       console.log("Updated successfully")
      } 
     ).catch(next(err))
+  }
+  function getClintEmail(orderId)
+  {
+    orderSchema.findOne({_id:orderId})
+    .then((data)=>{
+        console.log(data.clientId.email)
+    })
   }

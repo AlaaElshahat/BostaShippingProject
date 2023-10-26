@@ -1,4 +1,5 @@
 const mongoose=require("mongoose")
+const autoIncrement=require("mongoose-sequence")(mongoose)
 const pickUpSchemaa=mongoose.Schema(
     {
         _id:{type:Number} ,
@@ -9,4 +10,5 @@ const pickUpSchemaa=mongoose.Schema(
         }
     },{_id:false}
 )
+pickUpSchemaa.plugin(autoIncrement,{ inc_field:'_id'})
 mongoose.model('PickedReqs',pickUpSchemaa)
