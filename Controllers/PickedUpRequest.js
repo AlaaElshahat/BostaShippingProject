@@ -1,6 +1,6 @@
-require('../Models/product');
+require('../Models/pickedupreques');
 const mongoose=require("mongoose")
-const pickedUPRequestSchema=mongoose.model("PickUPReq");
+const pickedUPRequestSchema=mongoose.model('PickedReqs');
 exports.getPickedUPRequests=async(req,res,next)=>{
    await pickedUPRequestSchema.find().populate()
     .then((data)=>{ res.status(200).json(data)})

@@ -1,8 +1,10 @@
 const mongoose=require("mongoose");
+const autoIncrement=require("mongoose-sequence")(mongoose)
 const {AddressSchema}=require("./sharedSchemaes")
 const orderSchema=new mongoose.Schema({
    _id:{type:Number} ,
    clientId:{type:Number,ref:"Client"},
+   pickedupreqId:{type:Number,ref:"PickedReq"},
    products:[
     {
         productId:{type:Number,ref:"Product"},
@@ -11,7 +13,7 @@ const orderSchema=new mongoose.Schema({
    ],
    status:{
         type:String,
-        enum:['Pending','Packeged','awaitingToPicked UP','PickedUP','returned','Received'],
+        enum:['Pending','Packeged','collected','PickedUP','returned','Received'],
         default:'Pending'
    },
    paymentMethod:{
@@ -27,4 +29,5 @@ orderDate:{
     default:Date.now()
 }
 },{_id:false})
+// orderSchema.plugin(autoIncrement);
 mongoose.model('Orders',orderSchema)

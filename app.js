@@ -3,6 +3,7 @@ const server=express();
 const clientRoute=require("./Routes/Client")
 const productRoute=require("./Routes/product")
 const orderRoute=require("./Routes/orders")
+const pickupRoute=require("./Routes/pickedupreq")
 const mongoose=require("mongoose");
 let port=process.env.PORT||8080;
 mongoose.set('strictQuery', true);
@@ -23,6 +24,7 @@ server.use(express.json());
 server.use(clientRoute)
 server.use(productRoute)
 server.use(orderRoute)
+server.use(pickupRoute)
 
 //Not Found
 server.use((request,response,next)=>{

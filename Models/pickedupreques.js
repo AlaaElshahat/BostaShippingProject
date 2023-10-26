@@ -1,5 +1,5 @@
 const mongoose=require("mongoose")
-const pickUpSchema=mongoose.Schema(
+const pickUpSchemaa=mongoose.Schema(
     {
         _id:{type:Number} ,
         orderId:{type:Number,ref:"Order"},
@@ -9,4 +9,4 @@ const pickUpSchema=mongoose.Schema(
         }
     },{_id:false}
 )
-mongoose.model('PickUPReq',pickUpSchema)
+mongoose.model('PickedReqs',pickUpSchemaa)
