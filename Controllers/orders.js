@@ -12,6 +12,7 @@ exports.getorders=async(req,res,next)=>{
 }
 exports.addOrder=(req,res,next)=>{
     let addOrderSchema=new orderSchema({
+        _id:req.body.id,
         clientId:req.body.clientId,
         products:req.body.products,
         paymentMethod:req.body.paymentMethod,
@@ -32,7 +33,12 @@ exports.updateOrderStatus=(req,res,next)=>
          if(result.modifiedCount!=0)
          {
             res.status(200).json({data:"Updated Successfully ^_^"})
-            sendMail(req.status,"alaaelsayed136@gmail.com")
+            orderSchema.findOne({_id:orderId}).populate('clientId',{_id:0})
+            .then((data)=>{
+                sendMail(req.status, data.clientId.email)
+                
+            }).catch(err=>next(err))
+            
             if(req.body.status=="collected")
             {
               let addPickedUPRequestSchema=new pickedUPRequestSchema({
@@ -53,7 +59,7 @@ exports.updateOrderStatus=(req,res,next)=>
     }).catch(err=>next(err))
 }
 function sendMail(status,email){
-    console.log("email is sending")
+    console.log("email is sending" +email)
     const transporter = nodemailer.createTransport({
        host: "live.smtp.mailtrap.io",
        port:587,
@@ -88,10 +94,4 @@ function sendMail(status,email){
      } 
     ).catch(next(err))
   }
-  function getClintEmail(orderId)
-  {
-    orderSchema.findOne({_id:orderId})
-    .then((data)=>{
-        console.log(data.clientId.email)
-    })
-  }
+ 
